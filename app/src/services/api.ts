@@ -39,7 +39,7 @@ api.interceptors.response.use(
     // SUBSCRIPTION EXPIRED
     if (
       error.response?.status === 403 &&
-      error.response?.data?.subscriptionStatus
+      (error.response?.data as any)?.subscriptionStatus
     ) {
       window.location.href =
         '/subscription-expired';

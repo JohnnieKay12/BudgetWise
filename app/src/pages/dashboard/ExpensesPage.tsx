@@ -144,11 +144,9 @@ export default function ExpensesPage() {
           month,
         });
 
-      const expensesData = Array.isArray(
-        response
-      )
+        const expensesData = Array.isArray(response)
         ? response
-        : response?.data || [];
+        : (response as any)?.data || [];
 
       setExpenses(expensesData);
 

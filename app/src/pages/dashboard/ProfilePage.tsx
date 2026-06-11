@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { User, Mail, Calendar, Shield, CreditCard, Clock, CheckCircle2 } from 'lucide-react';
+import { Mail, Calendar, Shield, CreditCard, Clock, CheckCircle2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { useAuth } from '@/context/AuthContext';
 import { userAPI } from '@/services/api';

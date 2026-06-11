@@ -7,7 +7,7 @@ import {
   PiggyBank,
   Target,
   Bell,
-  Settings,
+  // Settings,
   User,
   Menu,
   X,
@@ -15,8 +15,8 @@ import {
   LogOut,
   Search,
   CalendarClock,
-  Sparkles,
-  MessageSquare,
+  // Sparkles,
+  // MessageSquare,
 } from 'lucide-react';
 
 import { useAuth } from '@/context/AuthContext';

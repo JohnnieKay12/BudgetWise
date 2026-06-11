@@ -6,7 +6,7 @@ import { Bell, Globe, Shield, CreditCard, ChevronRight, User } from 'lucide-reac
 import { toast } from 'sonner';
 
 export default function SettingsPage() {
-  const { user, setUser, refreshUser } = useAuth();
+  const { refreshUser } = useAuth();
 
   const [settings, setSettings] = useState({
     emailNotifications: true,
