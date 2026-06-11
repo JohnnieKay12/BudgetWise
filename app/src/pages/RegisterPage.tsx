@@ -108,8 +108,10 @@ const handlePayment = async () => {
           console.log(response);
 
           // REGISTER USER
+          const API_URL = import.meta.env.VITE_API_URL;
+
           const registerResponse = await fetch(
-            'http://localhost:5000/api/auth/register',
+            `${API_URL}/auth/register`,
             {
               method: 'POST',
               headers: {
