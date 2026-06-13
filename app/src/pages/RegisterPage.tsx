@@ -79,7 +79,6 @@ export default function RegisterPage() {
   };
 
   // Payment Handler
-  // Payment Handler
 const handlePayment = async () => {
   console.log('PAY BUTTON CLICKED');
 
@@ -109,6 +108,8 @@ const handlePayment = async () => {
 
           // REGISTER USER
           const API_URL = import.meta.env.VITE_API_URL;
+
+          console.log("API_URL =", API_URL);
 
           const registerResponse = await fetch(
             `${API_URL}/auth/register`,
