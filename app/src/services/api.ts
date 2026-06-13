@@ -78,7 +78,7 @@ export const paymentAPI = {
     const response = await api.post('/payments/initialize', { email, amount: 2000 });
     return response.data;
   },
-  verify: async (reference: string): Promise<{ success: boolean; user: User; token: string }> => {
+  verify: async (reference: string): Promise<{ success: boolean; user: User; token: string; reference: string; }> => {
     const response = await api.post(`/payments/verify/${reference}`);
     return response.data;
   },

@@ -235,6 +235,8 @@ exports.verifyPayment = async (req, res) => {
       token,
 
       user: userResponse,
+      
+      reference,
     });
   } catch (error) {
     console.error(
