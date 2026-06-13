@@ -245,6 +245,67 @@ export default function DashboardLayout() {
         </div>
       </aside>
 
+      {/* Mobile Sidebar */}
+      <AnimatePresence>
+        {isSidebarOpen && (
+          <>
+            {/* Overlay */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsSidebarOpen(false)}
+              className="fixed inset-0 bg-black/40 z-40 lg:hidden"
+            />
+
+            {/* Sidebar */}
+            <motion.aside
+              initial={{ x: -300 }}
+              animate={{ x: 0 }}
+              exit={{ x: -300 }}
+              transition={{ duration: 0.25 }}
+              className="fixed top-0 left-0 h-full w-72 bg-white z-50 lg:hidden shadow-xl"
+            >
+              <div className="p-6 border-b">
+                <h2 className="text-xl font-semibold">
+                  BudgetWise
+                </h2>
+              </div>
+
+              <nav className="p-4 space-y-2">
+                {sidebarItems.map((item) => (
+                  <button
+                    key={item.path}
+                    onClick={() =>
+                      handleNavigation(item.path)
+                    }
+                    className="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-sage-50"
+                  >
+                    <item.icon className="w-5 h-5" />
+                    {item.label}
+                  </button>
+                ))}
+
+                <div className="border-t mt-4 pt-4">
+                  {bottomItems.map((item) => (
+                    <button
+                      key={item.path}
+                      onClick={() =>
+                        handleNavigation(item.path)
+                      }
+                      className="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-sage-50"
+                    >
+                      <item.icon className="w-5 h-5" />
+                      {item.label}
+                    </button>
+                  ))}
+                </div>
+              </nav>
+            </motion.aside>
+          </>
+        )}
+      </AnimatePresence>
+
       {/* Main Content */}
       <div className="flex-1 lg:ml-64">
         {/* Top Bar */}
