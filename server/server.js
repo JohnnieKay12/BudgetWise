@@ -32,6 +32,7 @@ app.use(
     origin: [
       'http://localhost:3000',
       'http://localhost:5173',
+      'https://budget-wise-lsma.vercel.app',
       'https://budget-wise-ry6r.vercel.app',
     ],
     credentials: true,
