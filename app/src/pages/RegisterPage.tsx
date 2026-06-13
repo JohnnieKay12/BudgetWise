@@ -155,7 +155,7 @@ const handlePayment = async () => {
             );
 
             window.location.href =
-              `/payment-success?reference=${result.reference};
+            `/payment-success?reference=${response.reference}`;
           } else {
             toast.error(
               'Payment verification failed'
