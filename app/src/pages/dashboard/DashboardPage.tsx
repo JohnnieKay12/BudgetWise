@@ -127,9 +127,12 @@ export default function DashboardPage() {
       const statsRes = await dashboardAPI.getStats(selectedMonth);
       await delay(100); // 100ms buffer to bypass Render's burst rate limiter
 
-      // 2. Fetch Expenses (Pass selectedMonth to backend if supported!)
-      // If your backend doesn't support query strings yet, change it back to expenseAPI.getAll()
+      // 2. Fetch Expenses FOR THE SELECTED MONTH (Cards and Pie chart)
       const expensesRes = await expenseAPI.getAll({ month: selectedMonth });
+      await delay(100);
+
+      // 🚀 FIX: Fetch ALL Expenses UNFILTERED for an accurate historical Spending Trend
+      const allExpensesRes = await expenseAPI.getAll(); 
       await delay(100);
 
       // 3. Fetch Insights
@@ -154,56 +157,46 @@ export default function DashboardPage() {
         setInsights([]);
       }
 
-      // ================= EXPENSES =================
-      const expenses: Expense[] = 
-      Array.isArray(expensesRes) 
-      ? expensesRes 
-      : [];
-
-      const filteredExpenses = expenses.filter((expense) => {
-        const month = new Date(expense.date)
-          .toISOString()
-          .slice(0, 7);
-        
-        return month === selectedMonth;
-      });
+      // ================= EXPENSES (CURRENT MONTH) =================
+      const currentMonthExpenses: Expense[] = 
+        Array.isArray(expensesRes) 
+          ? expensesRes 
+          : [];
 
       // SORT NEWEST FIRST
-      const sortedExpenses = [...filteredExpenses].sort(
+      const sortedExpenses = [...currentMonthExpenses].sort(
         (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
       );
 
       setRecentExpenses(sortedExpenses.slice(0, 5));
 
-      // ================= MONTHLY DATA =================
+      // ================= MONTHLY TREND DATA (HISTORICAL) =================
+      const historyExpenses: Expense[] = 
+        Array.isArray(allExpensesRes) 
+          ? allExpensesRes 
+          : [];
+
       const monthMap: Record<string, number> = {};
 
-      expenses.forEach((exp) => {
-        const monthKey = new Date(exp.date)
-        .toLocaleString('en-NG', {
+      historyExpenses.forEach((exp) => {
+        const monthKey = new Date(exp.date).toLocaleString('en-NG', {
           month: 'short',
           year: '2-digit',
         });
 
-        monthMap[monthKey] =
-          (monthMap[monthKey] || 0) +
-          Number(exp.amount);
+        monthMap[monthKey] = (monthMap[monthKey] || 0) + Number(exp.amount);
       });
 
       const trendData = [];
 
       for (let i = 5; i >= 0; i--) {
         const date = new Date();
-
         date.setMonth(date.getMonth() - i);
 
-        const month = date.toLocaleString(
-          'en-NG',
-          {
-            month: 'short',
-            year: '2-digit',
-          }
-        );
+        const month = date.toLocaleString('en-NG', {
+          month: 'short',
+          year: '2-digit',
+        });
 
         trendData.push({
           month,
@@ -1085,34 +1078,28 @@ function AddExpenseModal({
             />
           </div>
 
-          {/* Note */}
-          <div>
-            <label className="block text-sm font-medium text-brand-black mb-2">
-              Note
-            </label>
+          {/* Actions */}
+          <div className="flex items-center justify-end gap-3 pt-4 border-t border-gray-100">
+            <button
+              type="button"
+              onClick={onClose}
+              className="px-5 py-2.5 rounded-xl border border-gray-200 hover:bg-gray-50 font-medium text-sm transition-all text-brand-black"
+            >
+              Cancel
+            </button>
 
-            <textarea
-              rows={3}
-              value={formData.note}
-              onChange={(e) =>
-                setFormData({
-                  ...formData,
-                  note: e.target.value,
-                })
-              }
-              placeholder="Additional details..."
-              className="w-full px-4 py-3 rounded-xl border border-gray-200 resize-none focus:outline-none focus:ring-2 focus:ring-brand-green/30 focus:border-brand-green"
-            />
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="px-5 py-2.5 rounded-xl bg-brand-green hover:bg-brand-green-dark text-white font-medium text-sm transition-all flex items-center justify-center min-w-[100px]"
+            >
+              {isSubmitting ? (
+                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+              ) : (
+                'Save'
+              )}
+            </button>
           </div>
-
-          {/* Submit */}
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className="btn-primary w-full justify-center py-3.5 disabled:opacity-70"
-          >
-            {isSubmitting ? 'Adding...' : 'Add Expense'}
-          </button>
         </form>
       </motion.div>
     </div>
