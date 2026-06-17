@@ -129,7 +129,7 @@ export default function DashboardPage() {
 
       // 2. Fetch Expenses (Pass selectedMonth to backend if supported!)
       // If your backend doesn't support query strings yet, change it back to expenseAPI.getAll()
-      const expensesRes = await expenseAPI.getAll(selectedMonth); 
+      const expensesRes = await expenseAPI.getAll({ month: selectedMonth });
       await delay(100);
 
       // 3. Fetch Insights
