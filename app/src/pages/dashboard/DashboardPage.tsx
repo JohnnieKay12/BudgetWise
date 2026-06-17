@@ -116,21 +116,28 @@ export default function DashboardPage() {
     loadDashboardData();
   }, [selectedMonth]);
 
+  // Utility helper to create a small pause between API calls
+  const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
   const loadDashboardData = async () => {
     try {
       setLoading(true);
 
-      const [
-        statsRes,
-        expensesRes,
-        insightsRes,
-        softLifeRes,
-      ] = await Promise.all([
-        dashboardAPI.getStats(selectedMonth),
-        expenseAPI.getAll(),
-        dashboardAPI.getInsights(selectedMonth),
-        dashboardAPI.getSoftLifeScore(selectedMonth),
-      ]);
+      // 1. Fetch Stats
+      const statsRes = await dashboardAPI.getStats(selectedMonth);
+      await delay(100); // 100ms buffer to bypass Render's burst rate limiter
+
+      // 2. Fetch Expenses (Pass selectedMonth to backend if supported!)
+      // If your backend doesn't support query strings yet, change it back to expenseAPI.getAll()
+      const expensesRes = await expenseAPI.getAll(selectedMonth); 
+      await delay(100);
+
+      // 3. Fetch Insights
+      const insightsRes = await dashboardAPI.getInsights(selectedMonth);
+      await delay(100);
+
+      // 4. Fetch Soft Life Score
+      const softLifeRes = await dashboardAPI.getSoftLifeScore(selectedMonth);
 
       // ================= STATS =================
       setStats({
@@ -157,7 +164,7 @@ export default function DashboardPage() {
         const month = new Date(expense.date)
           .toISOString()
           .slice(0, 7);
-      
+        
         return month === selectedMonth;
       });
 

@@ -551,18 +551,19 @@ export default function ExpensesPage() {
       </div>
             {/* MODAL */}
             {showAddModal && (
-        <ExpenseModal
-          expense={editingExpense}
-          onClose={() => {
-            setShowAddModal(false);
-            setEditingExpense(null);
-          }}
-          onSuccess={() => {
-            setShowAddModal(false);
-            setEditingExpense(null);
-            loadExpenses();
-          }}
-        />
+              <ExpenseModal
+                expense={editingExpense}
+                currentMonth={currentMonth}
+                onClose={() => {
+                  setShowAddModal(false);
+                  setEditingExpense(null);
+                }}
+                onSuccess={() => {
+                  setShowAddModal(false);
+                  setEditingExpense(null);
+                  loadExpenses();
+                }}
+              />
       )}
     </div>
   );
@@ -570,10 +571,12 @@ export default function ExpensesPage() {
 
 function ExpenseModal({
   expense,
+  currentMonth,
   onClose,
   onSuccess,
 }: {
   expense: any;
+  currentMonth: Date;
   onClose: () => void;
   onSuccess: () => void;
 }) {
@@ -586,7 +589,11 @@ function ExpenseModal({
       ? new Date(expense.date)
           .toISOString()
           .split('T')[0]
-      : new Date()
+      : new Date(
+        currentMonth.getFullYear(),
+        currentMonth.getMonth(),
+        1
+      )
           .toISOString()
           .split('T')[0],
     note: expense?.note || '',

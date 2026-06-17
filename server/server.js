@@ -24,6 +24,9 @@ const challengeRoutes = require('./routes/challenges');
 
 const app = express();
 
+// 🚀 CRITICAL FOR RENDER HOSTING: Tells Express to look at X-Forwarded-For headers
+app.set('trust proxy', 1);
+
 // ================= SECURITY MIDDLEWARE =================
 app.use(helmet());
 
@@ -41,17 +44,13 @@ app.use(
 
 // ================= RATE LIMITING =================
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
+  windowMs: 15 * 60 * 1000, // 15 minutes
 
-  max:
-    process.env.NODE_ENV ===
-    'development'
-      ? 10000
-      : 100,
+  // 💡 Increased production max from 100 to 600
+  max: process.env.NODE_ENV === 'development' ? 10000 : 600, 
 
   message: {
-    message:
-      'Too many requests, please try again later.',
+    message: 'Too many requests, please try again later.',
   },
 
   standardHeaders: true,
@@ -213,6 +212,7 @@ app.use(
 const PORT =
   process.env.PORT || 5000;
 
+  console.log("NODE_ENV:", process.env.NODE_ENV);
 app.listen(PORT, () => {
   console.log(
     `🚀 BudgetWise server running on port ${PORT}`

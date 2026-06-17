@@ -97,12 +97,12 @@ export default function DashboardLayout() {
     useEffect(() => {
       loadUnreadCount();
     
-      const interval = setInterval(() => {
-        loadUnreadCount();
-      }, 3000);
+      // const interval = setInterval(() => {
+      //   loadUnreadCount();
+      // }, 3000);
     
-      return () => clearInterval(interval);
-    }, [location.pathname]);
+      // return () => clearInterval(interval);
+    }, []);
 
   const loadUnreadCount = async () => {
     try {
