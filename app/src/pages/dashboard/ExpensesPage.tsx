@@ -594,8 +594,7 @@ function ExpenseModal({
         currentMonth.getMonth(),
         1
       )
-          .toISOString()
-          .split('T')[0],
+      .toLocaleDateString('en-CA'),
     note: expense?.note || '',
   });
 

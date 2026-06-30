@@ -37,15 +37,26 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           setUserState(userData);
         })
         .catch((error) => {
-          if (error.response?.status === 403) {
-            window.location.href =
-              '/subscription-expired';
+          console.error(error);
         
+          if (
+            error.response?.status === 401
+          ) {
+            localStorage.removeItem('token');
+            setUserState(null);
             return;
           }
         
-          localStorage.removeItem('token');
-          setUserState(null);
+          if (
+            error.response?.status === 403
+          ) {
+            window.location.href =
+              '/subscription-expired';
+            return;
+          }
+        
+          // Do NOT logout user for temporary errors
+          setUserState((prev) => prev);
         })
         .finally(() => {
           setIsLoading(false);
