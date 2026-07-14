@@ -327,4 +327,21 @@ export const dashboardAPI = {
   },
 };
 
+// Contact API
+export const contactAPI = {
+  send: async (data: {
+    fullName: string;
+    email: string;
+    subject: string;
+    message: string;
+  }) => {
+    const response = await api.post(
+      "/contact",
+      data
+    );
+
+    return response.data;
+  },
+};
+
 export default api;

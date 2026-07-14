@@ -8,6 +8,7 @@ const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
 
 // ROUTES
+const contactRoutes = require("./routes/contactRoutes");
 const authRoutes = require('./routes/authRoutes');
 const expenseRoutes = require('./routes/expenseRoutes');
 const budgetRoutes = require('./routes/budgetRoutes');
@@ -119,6 +120,8 @@ const connectDB = async () => {
 connectDB();
 
 // ================= API ROUTES =================
+app.use("/api/contact", contactRoutes);
+
 app.use('/api/auth', authRoutes);
 
 app.use('/api/expenses', expenseRoutes);

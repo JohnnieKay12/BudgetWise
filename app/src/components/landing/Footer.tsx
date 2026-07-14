@@ -9,22 +9,22 @@ const footerLinks = {
     { label: 'FAQ', href: '#faq' },
   ],
   Company: [
-    { label: 'About Us', href: '#' },
-    { label: 'Blog', href: '#' },
-    { label: 'Careers', href: '#' },
-    { label: 'Press', href: '#' },
+    { label: 'About Us', href: '/about' },
+    { label: 'Contact', href: '/contact' },
+    // { label: 'Careers', href: '#' },
+    // { label: 'Press', href: '#' },
   ],
-  Resources: [
-    { label: 'Help Center', href: '#' },
-    { label: 'Community', href: '#' },
-    { label: 'API Docs', href: '#' },
-    { label: 'Status', href: '#' },
-  ],
+  // Resources: [
+  //   { label: 'Help Center', href: '#' },
+  //   { label: 'Community', href: '#' },
+  //   { label: 'API Docs', href: '#' },
+  //   { label: 'Status', href: '#' },
+  // ],
   Legal: [
-    { label: 'Privacy Policy', href: '#' },
-    { label: 'Terms of Service', href: '#' },
-    { label: 'Cookie Policy', href: '#' },
-    { label: 'GDPR', href: '#' },
+    { label: 'Privacy Policy', href: '/privacy-policy' },
+    { label: 'Terms of Service', href: '/terms-of-service' },
+    // { label: 'Cookie Policy', href: '#' },
+    // { label: 'GDPR', href: '#' },
   ],
 };
 
@@ -73,12 +73,21 @@ export default function Footer() {
               <ul className="space-y-3">
                 {links.map((link) => (
                   <li key={link.label}>
-                    <a
-                      href={link.href}
-                      className="text-sm text-white/50 hover:text-brand-green transition-colors"
-                    >
-                      {link.label}
-                    </a>
+                    {link.href.startsWith("#") ? (
+                      <a
+                        href={link.href}
+                        className="text-sm text-white/50 hover:text-brand-green transition-colors"
+                      >
+                        {link.label}
+                      </a>
+                    ) : (
+                      <Link
+                        to={link.href}
+                        className="text-sm text-white/50 hover:text-brand-green transition-colors"
+                      >
+                        {link.label}
+                      </Link>
+                    )}
                   </li>
                 ))}
               </ul>
