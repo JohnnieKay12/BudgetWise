@@ -11,23 +11,45 @@ exports.sendContactMessage = async (req, res) => {
       });
     }
 
+    // Debug logs for Render
+    console.log("EMAIL_HOST:", process.env.EMAIL_HOST);
+    console.log("EMAIL_PORT:", process.env.EMAIL_PORT);
+    console.log("EMAIL_USER:", process.env.EMAIL_USER);
+
+    if (
+      !process.env.EMAIL_HOST ||
+      !process.env.EMAIL_PORT ||
+      !process.env.EMAIL_USER ||
+      !process.env.EMAIL_PASS
+    ) {
+      return res.status(500).json({
+        success: false,
+        message: "Email configuration is missing.",
+      });
+    }
+
     const transporter = nodemailer.createTransport({
       host: process.env.EMAIL_HOST,
       port: Number(process.env.EMAIL_PORT),
-      secure: false,
+      secure: false, // true only for port 465
       auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS,
       },
+
+      // Timeouts
       connectionTimeout: 10000,
       greetingTimeout: 10000,
       socketTimeout: 10000,
     });
 
+    // Verify SMTP connection before sending
+    await transporter.verify();
+
     await transporter.sendMail({
       from: `"BudgetWise Contact Form" <${process.env.EMAIL_USER}>`,
-      replyTo: email, // So you can reply directly to the sender
       to: process.env.EMAIL_USER,
+      replyTo: email,
 
       subject: `📩 BudgetWise Contact: ${subject}`,
 
@@ -36,9 +58,7 @@ exports.sendContactMessage = async (req, res) => {
           <h2>New Contact Message</h2>
 
           <p><strong>Full Name:</strong> ${fullName}</p>
-
           <p><strong>Email:</strong> ${email}</p>
-
           <p><strong>Subject:</strong> ${subject}</p>
 
           <hr>
@@ -48,16 +68,17 @@ exports.sendContactMessage = async (req, res) => {
       `,
     });
 
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       message: "Message sent successfully.",
     });
-  } catch (err) {
-    console.error(err);
 
-    res.status(500).json({
+  } catch (err) {
+    console.error("CONTACT FORM ERROR:", err);
+
+    return res.status(500).json({
       success: false,
-      message: "Unable to send message.",
+      message: err.message || "Unable to send message.",
     });
   }
 };
