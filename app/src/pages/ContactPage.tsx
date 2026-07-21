@@ -11,7 +11,7 @@ import {
 import Footer from "../components/landing/Footer";
 import { useState } from "react";
 import { toast } from "sonner";
-import { contactAPI } from "@/services/api";
+// import { contactAPI } from "@/services/api";
 
 const Contact = () => {
 
@@ -22,35 +22,35 @@ const Contact = () => {
         message: "",
     });
       
-    const [loading, setLoading] = useState(false);
+    // const [loading, setLoading] = useState(false);
 
-    const handleSubmit = async (
-        e: React.FormEvent
-    ) => {
-        e.preventDefault();
+    // const handleSubmit = async (
+    //     e: React.FormEvent
+    // ) => {
+    //     e.preventDefault();
       
-        setLoading(true);
+    //     setLoading(true);
       
-        try {
-          await contactAPI.send(formData);
+    //     try {
+    //       await contactAPI.send(formData);
         
-          toast.success("Message sent successfully!");
+    //       toast.success("Message sent successfully!");
         
-          setFormData({
-            fullName: "",
-            email: "",
-            subject: "",
-            message: "",
-          });
-        } catch (err: any) {
-          toast.error(
-            err.response?.data?.message ||
-            "Something went wrong."
-          );
-        } finally {
-          setLoading(false);
-        }
-    };
+    //       setFormData({
+    //         fullName: "",
+    //         email: "",
+    //         subject: "",
+    //         message: "",
+    //       });
+    //     } catch (err: any) {
+    //       toast.error(
+    //         err.response?.data?.message ||
+    //         "Something went wrong."
+    //       );
+    //     } finally {
+    //       setLoading(false);
+    //     }
+    // };
 
   return (
     <div className="bg-white">
@@ -186,12 +186,29 @@ const Contact = () => {
                 Send Us A Message
               </h2>
 
-              <p className="text-gray-600 mb-8">
-                Fill in the form below and we'll get back to you as soon as possible.
-              </p>
+              <div className="mb-8 rounded-xl border border-yellow-300 bg-yellow-50 p-5">
+                <h3 className="font-bold text-yellow-800 text-lg">
+                  🚧 Contact Form Coming Soon
+                </h3>
+
+                <p className="mt-2 text-gray-700">
+                  We're currently upgrading our contact system to provide a faster and
+                  more reliable support experience.
+                </p>
+
+                <p className="mt-4">
+                  In the meantime, please contact us using:
+                </p>
+
+                <ul className="mt-3 space-y-2 text-gray-700">
+                  <li>📧 <strong>jcodesstudio@gmail.com</strong></li>
+                  <li>📞 <strong>+234 707 843 2313</strong></li>
+                  <li>🕒 Response Time: Within 24 hours</li>
+                </ul>
+              </div>
 
               <form 
-                onSubmit={handleSubmit}
+                // onSubmit={handleSubmit}
                 className="space-y-6">
 
                 <div>
@@ -211,6 +228,7 @@ const Contact = () => {
                     }
                     placeholder="John Doe"
                     className="w-full border rounded-xl px-5 py-4 outline-none focus:ring-2 focus:ring-brand-green"
+                    disabled
                   />
 
                 </div>
@@ -232,6 +250,7 @@ const Contact = () => {
                     }
                     placeholder="john@example.com"
                     className="w-full border rounded-xl px-5 py-4 outline-none focus:ring-2 focus:ring-brand-green"
+                    disabled
                   />
 
                 </div>
@@ -253,6 +272,7 @@ const Contact = () => {
                     }
                     placeholder="How can we help?"
                     className="w-full border rounded-xl px-5 py-4 outline-none focus:ring-2 focus:ring-brand-green"
+                    disabled
                   />
 
                 </div>
@@ -274,17 +294,19 @@ const Contact = () => {
                     }
                     placeholder="Write your message..."
                     className="w-full border rounded-xl px-5 py-4 outline-none resize-none focus:ring-2 focus:ring-brand-green"
+                    disabled
                   />
 
                 </div>
 
                 <button
                   type="submit"
-                  disabled={loading}
+                  // disabled={loading}
                   className="inline-flex items-center gap-3 bg-brand-green hover:bg-green-700 text-white px-8 py-4 rounded-xl font-semibold transition"
                 >
                   <Send size={18} />
-                  {loading ? "Sending..." : "Send Message"}
+                  {/* {loading ? "Sending..." : "Send Message"} */}
+                  Coming Soon
                 </button>
 
               </form>

@@ -171,40 +171,56 @@ export default function DashboardPage() {
       setRecentExpenses(sortedExpenses.slice(0, 5));
 
       // ================= MONTHLY TREND DATA (HISTORICAL) =================
-      const historyExpenses: Expense[] = 
-        Array.isArray(allExpensesRes) 
-          ? allExpensesRes 
+
+        const historyExpenses: Expense[] =
+        Array.isArray(allExpensesRes)
+          ? allExpensesRes
           : [];
 
-      const monthMap: Record<string, number> = {};
+          const monthMap: Record<string, number> = {};
 
-      historyExpenses.forEach((exp) => {
-        const monthKey = new Date(exp.date).toLocaleString('en-NG', {
-          month: 'short',
-          year: '2-digit',
-        });
+          historyExpenses.forEach((exp) => {
+            const d = new Date(exp.date);
 
-        monthMap[monthKey] = (monthMap[monthKey] || 0) + Number(exp.amount);
-      });
+            const key = `${d.getFullYear()}-${d.getMonth()}`;
 
-      const trendData = [];
+            monthMap[key] =
+              (monthMap[key] || 0) + Number(exp.amount);
+          });
 
-      for (let i = 5; i >= 0; i--) {
-        const date = new Date();
-        date.setMonth(date.getMonth() - i);
+          const monthNames = [
+          "Jan",
+          "Feb",
+          "Mar",
+          "Apr",
+          "May",
+          "Jun",
+          "Jul",
+          "Aug",
+          "Sep",
+          "Oct",
+          "Nov",
+          "Dec",
+          ];
 
-        const month = date.toLocaleString('en-NG', {
-          month: 'short',
-          year: '2-digit',
-        });
+          const trendData = [];
 
-        trendData.push({
-          month,
-          amount: monthMap[month] || 0,
-        });
-      }
+        for (let i = 5; i >= 0; i--) {
+          const d = new Date();
 
-      setMonthlyData(trendData);
+          d.setMonth(d.getMonth() - i);
+
+          const key = `${d.getFullYear()}-${d.getMonth()}`;
+
+          trendData.push({
+            month: `${monthNames[d.getMonth()]} ${String(
+              d.getFullYear()
+            ).slice(-2)}`,
+            amount: monthMap[key] || 0,
+          });
+        }
+
+        setMonthlyData(trendData);
 
       // ================= CATEGORY DATA =================
       const categoryMap: Record<string, number> = {};
