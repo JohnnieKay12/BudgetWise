@@ -1,10 +1,11 @@
 import {
-    createContext,
-    useContext,
-    useEffect,
-    useState,
-    ReactNode,
-  } from "react";
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
+
+import type { ReactNode } from "react";
   
   type MonthContextType = {
     currentMonth: Date;

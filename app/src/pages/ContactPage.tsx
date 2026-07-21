@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 import Footer from "../components/landing/Footer";
 import { useState } from "react";
-import { toast } from "sonner";
+// import { toast } from "sonner";
 // import { contactAPI } from "@/services/api";
 
 const Contact = () => {
