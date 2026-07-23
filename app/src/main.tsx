@@ -5,14 +5,12 @@ import './index.css';
 import App from './App.tsx';
 
 import { AuthProvider } from './context/AuthContext';
-import { MonthProvider } from "./context/MonthContext";
+// import { MonthProvider } from "./context/MonthContext";
 
 createRoot(document.getElementById('root')!).render(
     <BrowserRouter>
       <AuthProvider>
-        <MonthProvider>
           <App />
-        </MonthProvider>
       </AuthProvider>
     </BrowserRouter>
 
